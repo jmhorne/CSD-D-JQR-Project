@@ -256,14 +256,18 @@ Data Structures may be completed in any order; data structures may be used to bu
 - Listens for new workers on a UDP port. Once a broadcast request from a worker is received on that port, communications change to TCP on the same port number. 
 
 - Started via command line with two flags 
-    - `-c – Configuration file`
-    - `-l – Log file`
+    - `-c` – Configuration file
+    - `-l` – Log file
+
+<br>
 
 ### 2.2.1 Server Startup
 
 The server will be started via the command line with two (2) flags. The first flag is `-c` and the argument given is the name of a configuration file (see 2.2.1.1 for details). The second flag is `-l` and the argument given is the name of a log file (see 2.2.1.2 for details). 
 
 Example command: `./fight_arena –c config.txt -l log_file.txt`
+
+<br>
 
 #### 2.2.1.1 The Configuration file 
 
@@ -277,6 +281,8 @@ The format of the configuration file and filename is up to the Trainee. How the 
 
 - Max client count: Maximum amount of session IDs that can be active.
 
+<br>
+
 #### 2.2.1.2 The Log File 
 
 The format of the log file and filename is up to the Trainee. How the server adds entries to the file is up to the Trainee as well. The information that must be present in a log entry is as follows: 
@@ -288,6 +294,8 @@ The format of the log file and filename is up to the Trainee. How the server add
 - Example: `2022090814:13:20 Connection 172.168.0.12:12345 Success`
 
 ### 2.2.2 Server Functionality 
+
+<br>
 
 #### 2.2.2.1 Client Management and the fight arena 
 
@@ -302,6 +310,8 @@ The format of the log file and filename is up to the Trainee. How the server add
 - The server sends a 'Fighter Response' packet to all clients with the winning fighter 
 - It is up to the Trainee how to track Client connections internally, and how to correspond a connection with a fighter
 
+<br>
+
 #### 2.2.2.2 Worker Management 
 - The Server should maintain a pool of available Workers 
 - As workers are discovered, they should be added to this pool 
@@ -309,7 +319,11 @@ The format of the log file and filename is up to the Trainee. How the server add
 - The Trainee is responsible for designing how the server handles active and inactive workers and how it stores worker information 
 - The Trainee is responsible for how the server decides which worker to use when there is work to be done 
 
+<br>
+
 ### 2.2.3 Server-Client Communication Protocols 
+
+<br>
 
 #### 2.2.3.1 Client connecting to Server 
 - 'Connect Request' is how a client gets a valid Session ID 
@@ -317,6 +331,8 @@ The format of the log file and filename is up to the Trainee. How the server add
 - If the server can accept clients, it will respond with a 'Connect Response' packet containing the new Session ID 
 - If the server cannot accept new clients, it will respond with a 'Failure' packet with a 'server busy' opcode. 
 - The client will terminate the connection
+
+<br>
 
 #### 2.2.3.2 Client Sending Fighter 
 - the server will listen on a defined TCP port for connections from clients.  
@@ -328,7 +344,11 @@ The format of the log file and filename is up to the Trainee. How the server add
 - If there is a general error (server error or calculation error), the Server will respond with a 'Failure' packet with a 'Server-Side Error' opcode 
 - If a client has sent a fighter packet with invalid fighter stats, the Server will respond with a 'Fighter Reject' packet with appropriate opcode 
 
+<br>
+
 ### 2.2.4 Server-Worker Communication Protocol 
+
+<br>
 
 #### 2.2.4.1 Worker Discovering a Server 
 - The server will listen on a defined UDP port for 'Discovery Request' packets from potential workers 
@@ -336,6 +356,8 @@ The format of the log file and filename is up to the Trainee. How the server add
 - If the worker responds with a 'Discovery Acknowledge' packet, the server will send a 'Discovery Acknowledge' packet. 
 - If the worker responds with a 'Discovery Reject' packet, the server ignores the request 
 - The server terminates the connection 
+
+<br>
 
 #### 2.2.4.2 Server giving Worker work 
 - Server identifies which of its available Workers can take work 
@@ -359,6 +381,8 @@ The format of the log file and filename is up to the Trainee. How the server add
 
 ## 2.5 Detailed Packet Requirements
 
+<br>
+
 ### 2.5.1 Packet Type codes 
 
 |||
@@ -368,6 +392,8 @@ The format of the log file and filename is up to the Trainee. How the server add
 |Discovery|0x03|
 |Work|0x04|
 |Failure|0xFF|
+
+<br>
 
 ### 2.5.2 Opcodes 
 |||
@@ -384,17 +410,27 @@ The format of the log file and filename is up to the Trainee. How the server add
 |Awake|0x09|
 |Data|0x0a|
 
+<br>
+
 ### 2.5.3 Connect Packets 
 
 Connect Packets are how Clients can retrieve a new Session ID. 
 
+<br>
+
 #### 2.5.3.1 Connect Request: 
 
+<br>
+
 #### 2.5.3.2 Connect Response:
+
+<br>
 
 ### 2.5.4 Fighter Packets 
 
 Fighter Packets are used for Client and Server communications for sending fighter information, and retrieving fight results or errors 
+
+<br>
 
 #### 2.5.4.1 Fighter Request 
 The Fighter Request packet will consist of 8 fields: 
@@ -407,6 +443,8 @@ The Fighter Request packet will consist of 8 fields:
 7. Fighter Name Length (Number of characters in fighter name) – 1 Byte 
 8. Fighter Name – Variable length
 
+<br>
+
 #### 2.5.4.2 Fighter Acknowledge 
 1. The Fighter Acknowledge will consist of 8 fields: 
 2. Fighter Packet Flag – 1 Byte 
@@ -417,6 +455,8 @@ The Fighter Request packet will consist of 8 fields:
 7. Opponent Luck stat – 1 Byte 
 8. Opponent Name Length – 1 Byte 
 9. Opponent Name – Variable length
+
+<br>
 
 #### 2.5.4.3 Fighter Reject 
 
@@ -435,9 +475,13 @@ Reject Reason Codes:
 |Luck Value|0x05|The luck value is either below 10 or above 80|
 |Final Value|0x06|The total value of attack, defense, and luck does not equal 100|
 
+<br>
+
 ### 2.5.5 Discovery Packets 
 
 Discovery packets are used for Workers to be able to find a Fight Arena server. 
+
+<br>
 
 #### 2.5.5.1 Discovery Request 
 
@@ -447,6 +491,8 @@ The Discovery Request packet consists of 4 fields:
 3. Worker's IP Address – 4 Bytes 
 4. Worker's TCP port – 1 Byte 
 
+<br>
+
 #### 2.5.5.2 Discovery Response 
 
 The Discovery Response packet consists of 3 fields: 
@@ -454,11 +500,15 @@ The Discovery Response packet consists of 3 fields:
 2. Response flag – 1 Byte 
 3. Server's IP – 4 Bytes 
 
+<br>
+
 #### 2.5.5.3 Discovery Acknowledge 
 
 The Discovery Acknowledge packet consists of 2 fields: 
 1. Discovery Packet flag – 1 Byte 
 2. Acknowledge flag – 1 Byte 
+
+<br>
 
 #### 2.5.5.4 Discovery Reject 
 
@@ -466,15 +516,21 @@ The Discovery Reject packet consists of 2 fields:
 1. Discovery Packet flag – 1 Byte 
 2. Reject flag – 1 Byte 
 
+<br>
+
 ### 2.5.6 Work Packets 
 
 Work packets are used by the Server to send work to Workers and for Workers to return results to the Server. 
+
+<br>
 
 #### 2.5.6.1 Work Awake 
 
 The Work Awake packet consists of 2 fields: 
 1. Work Packet flag – 1 Byte 
 2. Awake flag – 1 Byte 
+
+<br>
 
 #### 2.5.6.2 Work Data 
 
@@ -487,6 +543,8 @@ The Work Data packet consists of 8 fields:
 6. Fighter 2 Attack stat – 1 Byte 
 7. Fighter 2 Defense stat – 1 Byte 
 8. Fighter 2 Luck stat – 1 Byte 
+
+<br>
 
 #### 2.5.6.3 Work Response 
 
@@ -501,6 +559,8 @@ Return Codes:
 |Fighter 1 Wins|0x01|
 |Fighter 2 Wins|0x02|
 |Error|0xFF|
+
+<br>
 
 ### 2.5.7 Failure Packet 
 
