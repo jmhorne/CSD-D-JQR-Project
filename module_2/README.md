@@ -224,11 +224,25 @@ Connect Packets are how Clients can retrieve a new Session ID.
 
 #### 2.5.3.1 Connect Request: 
 
+The Connect Request packet will consist of 2 fields:
+1. Connect Packet Flag - 1 Byte
+2. Request Flag - 1 Byte
+
 <br>
 
 #### 2.5.3.2 Connect Response:
+The Connect Request packet will consist of 3 fields:
+1. Connect Packet Flag - 1 Byte
+2. Response Flag - 1 Byte
+3. Session ID - 8 Bytes
 
 <br>
+
+#### 2.5.3.3 Connect Failure:
+The Connect Failure packet will consist of _ fields:
+1. Connect Packet Flag - 1 Byte
+2. Failure Flag - 1 Byte
+3. Server Busy Flag - 1 Byte
 
 ### 2.5.4 Fighter Packets 
 
